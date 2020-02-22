@@ -1,15 +1,29 @@
 package com.learning.annotations.modal;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Data
-@Component
+@Table(name = "user")
+@SQLDelete(sql = "UPDATE user SET deleted=true WHERE id=?")
+//@Where(clause = "deleted = false")
+@FilterDef(
+        name = "deletedUserFilter",
+        parameters = @ParamDef(name = "isDeleted", type = "boolean")
+)
+@Filter(
+        name = "deletedUserFilter",
+        condition = "deleted = :isDeleted"
+)
 public class User {
 
     @Id
@@ -18,5 +32,5 @@ public class User {
     private String firstname;
     private String lastname;
     private String contact;
-
+    private Boolean deleted;
 }

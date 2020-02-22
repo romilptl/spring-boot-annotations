@@ -16,8 +16,13 @@ public class UserRestController {
     @Autowired UserService userService;
 
     @GetMapping(value = "/list")
-    public ResponseEntity<List<User>> findAll() {
-        List<User> users = userService.findAll();
+    public ResponseEntity<List<User>> findAll(@RequestParam(value = "isDeleted", required = false, defaultValue = "false") boolean isDeleted) {
+        List<User> users = userService.findAllFilter(isDeleted);
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id) {
+        userService.delete(id);
     }
 }

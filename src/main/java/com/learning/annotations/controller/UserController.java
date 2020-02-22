@@ -60,7 +60,12 @@ public class UserController {
 
     @GetMapping(value = "/user/{id}")
     public @ResponseBody Optional<User>  findUserById(@PathVariable Long id) {
-        Optional<User> user = userService.findById(id);
+        Optional<User> user = userService.findById(id); 
         return user;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.delete(id);
     }
 }
